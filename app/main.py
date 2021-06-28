@@ -27,7 +27,7 @@ def create():
 def about():
     info_text = """I used machine learning clustering to group together the most similar tracks in
     the top 50 charts of the US, UK and World on Spotify. In order to create these playlists, you will need
-    to input a certain minimum number of songs. This is for the algorithm to use a base number and build
+    to input a certain minimum number of songs (1-19). This is for the algorithm to use a base number and build
     clusters."""
     if request.method == 'POST':
         return render_template('create.html', info_text=info_text)
@@ -36,14 +36,16 @@ def about():
 
 @app.route("/playlists", methods=['GET', 'POST'])
 def playlists():
+    global track_ids
     if request.method == 'GET':
         return f"""This url is not available unless you have requested to create playlists. Visit '/create' to start."""
     elif request.method == 'POST':
         form_data = request.form
+        res, clusters = create_playlists(int(form_data['minimum number of songs per playlist']))
 
-        res = create_playlists(int(form_data['minimum number of songs per playlist']))
+        track_ids, res = res['id'], res.drop('id', 1)
 
-        return render_template('playlists.html', form_data=form_data['minimum number of songs per playlist'], data=res.to_html())
+        return render_template('playlists.html', form_data=form_data['minimum number of songs per playlist'], data=res.to_html(), num=clusters)
 
 
 @app.route("/login", methods=['GET', 'POST'])

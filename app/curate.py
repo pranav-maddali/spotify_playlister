@@ -30,7 +30,10 @@ track_features = ['artist', 'track', 'album', 'id', 'danceability',
 ############################################################################
 
 def generateToken():
+    #global var for the auth token
     global sp
+
+    #allow us access to Spotify's records
     token = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     cache_token = token.get_access_token()
 
@@ -107,7 +110,10 @@ def clustering(dataframe, min_number):
     dataframe['dbscan label'] = np.array(dbs.labels_)
     dataframe = dataframe[dataframe['dbscan label'] != -1]
 
-    return dataframe
+    labels = dataframe['dbscan label']
+    clusters = len(set(labels)) - (1 if -1 in labels else 0)
+
+    return dataframe, clusters
 
 def output(dataframe, all_tracks):
     res = pd.concat([dataframe, all_tracks[all_tracks.columns[:4]]], axis=1)
@@ -117,6 +123,8 @@ def output(dataframe, all_tracks):
     res.sort_values(by=['dbscan label'], ascending=True, inplace=True)
 
     res['dbscan label'] = res['dbscan label'].apply(lambda x: int(x+1))
+
+    res.rename({'dbscan label':'Playlist #'}, axis=1, inplace=True)
 
     return res
 
@@ -128,11 +136,11 @@ def create_playlists(tracks_per_cluster):
     tracks, top_artists = clean()
 
     processed_DF = preprocess(tracks)
-    clustered_DF = clustering(processed_DF, tracks_per_cluster)
+    clustered_DF, clusters = clustering(processed_DF, tracks_per_cluster)
 
     out = output(clustered_DF, tracks)
     out.reset_index(drop=True, inplace=True)
 
-    return out
+    return out, clusters
 
 ################################################################################

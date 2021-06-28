@@ -1,23 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='create.css') }}">
 </head>
-<div id="create_text" class="create">
-  <h1>Create playlists</h1>
-  <p>Generate playlists from over 150 top songs played
-    on Spotify as a launchpad for your next favorite playlist.</p>
-  <form method ="post" action="/playlists">
-    <p>Enter the number (1-29) of songs you would like to see per playlist.</p>
-    <input class="text-field" type="text" name="minimum number of songs per playlist" required="required" pattern="[1-9]{1}|[1-2]{1}[0-9]{1}">
-    <button class="button" type="submit" name="submit_button" value="create"> <span>Create</span> </button>
-  </form>
-  <form method ="post" action="/about">
-    <button class="button" type="submit" name="submit_button" value="information"><span>Info</span></button>
-  </form>
 
-</div>
+<body>
+  <div id="loader" class="hidden"></div>
+
+  <div id="create_text" class="create">
+    <h1>Create playlists</h1>
+    <p>Generate playlists from over 150 top songs played
+      on Spotify as a launchpad for your next favorite playlist.</p>
+    <form method ="post" action="/playlists">
+      <p>Enter the number (1-19) of songs you would like to see per playlist.</p>
+      <input id="num_tracks" class="text-field" type="text" onkeyup="checkInput(this)" name="minimum number of songs per playlist" required="required">
+      <button id="btn" class="hidden" onclick="preloader()" type="submit" name="submit_button" value="create"> <span>Create</span> </button>
+    </form>
+    <form method ="post" action="/about">
+      <button id="btn" type="submit" name="submit_button" value="information"><span>Info</span></button>
+    </form>
+  </div>
+</body>
+
+<script type="text/javascript" src="static/scripts/verify.js"></script>
+
 
 <div><p><b>{{ info_text }}</b></p></div>
 {% endblock content %}
