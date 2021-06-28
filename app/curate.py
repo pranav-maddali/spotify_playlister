@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import json
 
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.decomposition import PCA
@@ -7,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 
 import spotipy.util as util
 from spotipy.oauth2 import SpotifyClientCredentials
+import spotipy
 
 ##################################################
 CLIENT_ID = "46caa64bfab44809a68d8f6fed02fdff"
@@ -28,6 +30,7 @@ track_features = ['artist', 'track', 'album', 'id', 'danceability',
 ############################################################################
 
 def generateToken():
+    global sp
     token = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     cache_token = token.get_access_token()
 
@@ -68,7 +71,6 @@ def playlist(username, id_):
 
     return df
 
-
 def playlists(playlist_dictionary):
     output = pd.DataFrame(columns=track_features)
 
@@ -80,7 +82,7 @@ def playlists(playlist_dictionary):
     return output
 
 def clean():
-    all_tracks = playlists(pl_dict)
+    all_tracks = playlists(charts)
     all_tracks = all_tracks.drop_duplicates(subset='track', keep='first')
 
     top5_artists = all_tracks['artist'].value_counts()[:5]
@@ -107,9 +109,7 @@ def clustering(dataframe, min_number):
 
     return dataframe
 
-def output(dataframe, clean_output):
-    all_tracks = clean_output[0]
-
+def output(dataframe, all_tracks):
     res = pd.concat([dataframe, all_tracks[all_tracks.columns[:4]]], axis=1)
 
     res.dropna(inplace=True)
@@ -120,16 +120,19 @@ def output(dataframe, clean_output):
 
     return res
 
-"""=========================================================================="""
+################################################################################
 
-def compile(tracks_per_cluster):
+def create_playlists(tracks_per_cluster):
     generateToken()
 
-    all_tracks, top_artists = clean()
+    tracks, top_artists = clean()
 
-    processed_DF = preprocess(all_tracks)
+    processed_DF = preprocess(tracks)
     clustered_DF = clustering(processed_DF, tracks_per_cluster)
 
-    out = output(clustered_DF, all_tracks)
+    out = output(clustered_DF, tracks)
+    out.reset_index(drop=True, inplace=True)
 
     return out
+
+################################################################################

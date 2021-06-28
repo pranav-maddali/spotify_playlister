@@ -1,12 +1,17 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, Blueprint, render_template, request, redirect, session, url_for
+from flask_login import login_required, current_user, LoginManager
+from flask_sqlalchemy import SQLAlchemy
+import pandas as pd
+
+from curate import *
 
 import sys
 import os
+import json
 import requests
 
-#######initialize Flask application#######
+##########################################
 app = Flask(__name__)
-app.config["TEMPLATES_AUTO_RELOAD"] = True
 ##########################################
 
 @app.route("/")
@@ -18,13 +23,15 @@ def home():
 def create():
     return render_template('create.html')
 
-@app.route("/about", methods=['POST'])
+@app.route("/about", methods=['GET', 'POST'])
 def about():
+    info_text = """I used machine learning clustering to group together the most similar tracks in
+    the top 50 charts of the US, UK and World on Spotify. In order to create these playlists, you will need
+    to input a certain minimum number of songs. This is for the algorithm to use a base number and build
+    clusters."""
     if request.method == 'POST':
-        info_text = """I used machine learning clustering to group together the most similar tracks in
-        the top 50 charts of the US, UK and World on Spotify. In order to create these playlists, you will need
-        to input a certain minimum number of songs. This is for the algorithm to use a base number and build
-        clusters."""
+        return render_template('create.html', info_text=info_text)
+    elif request.method == 'GET':
         return render_template('create.html', info_text=info_text)
 
 @app.route("/playlists", methods=['GET', 'POST'])
@@ -33,7 +40,11 @@ def playlists():
         return f"""This url is not available unless you have requested to create playlists. Visit '/create' to start."""
     elif request.method == 'POST':
         form_data = request.form
-        return render_template('playlists.html', form_data=form_data['minimum number of songs per playlist'])
+
+        res = create_playlists(int(form_data['minimum number of songs per playlist']))
+
+        return render_template('playlists.html', form_data=form_data['minimum number of songs per playlist'], data=res.to_html())
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

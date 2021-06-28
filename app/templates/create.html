@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='create.css') }}">
 </head>
-<div class="create">
+<div id="create_text" class="create">
   <h1>Create playlists</h1>
   <p>Generate playlists from over 150 top songs played
     on Spotify as a launchpad for your next favorite playlist.</p>
@@ -17,6 +17,7 @@
     <button class="button" type="submit" name="submit_button" value="information"><span>Info</span></button>
   </form>
 
-  <p><b>{{ info_text }}</b></p>
 </div>
+
+<div><p><b>{{ info_text }}</b></p></div>
 {% endblock content %}

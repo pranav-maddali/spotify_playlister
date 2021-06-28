@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="home">
-    <h2>your playlists are being created!</h2>
+    <h2>your playlists have been created!</h2>
     <p>trying to curate with atleast {{ form_data }} songs per playlist.</p>
+</div>
+<div class="dataframe">
+  <h2>{{ data | safe }}</h2>
 </div>
 {% endblock content %}
