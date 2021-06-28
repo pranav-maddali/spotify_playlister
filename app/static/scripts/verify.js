@@ -1,3 +1,4 @@
+//checks the input in create.html to ensure the user inputs numbers between 1-29
 function checkInput(num_tracks) {
   var btn = document.getElementById("btn");
   var x = num_tracks.value;
@@ -13,6 +14,7 @@ function checkInput(num_tracks) {
   }
 };
 
+//triggers the preloader once the user has clicked the 'Create' button
 function preloader() {
   var item = document.getElementById("loader");
   if (item.className == "hidden") {
