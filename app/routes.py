@@ -3,27 +3,24 @@ from flask_login import login_required, current_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 
-from curate import *
+from app.curate import *
+from app import application
 
 import sys
 import os
 import json
 import requests
 
-##########################################
-app = Flask(__name__)
-##########################################
-
-@app.route("/")
-@app.route("/home")
+@application.route("/")
+@application.route("/home")
 def home():
     return render_template('home.html')
 
-@app.route("/create", methods=['GET', 'POST'])
+@application.route("/create", methods=['GET', 'POST'])
 def create():
     return render_template('create.html')
 
-@app.route("/about", methods=['GET', 'POST'])
+@application.route("/about", methods=['GET', 'POST'])
 def about():
     info_text = """I used machine learning clustering to group together the most similar tracks in
     the top 50 charts of the US, UK and World on Spotify. In order to create these playlists, you will need
@@ -34,7 +31,7 @@ def about():
     elif request.method == 'GET':
         return render_template('create.html', info_text=info_text)
 
-@app.route("/playlists", methods=['GET', 'POST'])
+@application.route("/playlists", methods=['GET', 'POST'])
 def playlists():
     global track_ids
     if request.method == 'GET':
@@ -48,10 +45,6 @@ def playlists():
         return render_template('playlists.html', form_data=form_data['minimum number of songs per playlist'], data=res.to_html(), num=clusters)
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@application.route("/login", methods=['GET', 'POST'])
 def login():
     return f"""Currently under construction. Check back soon for updates."""
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
