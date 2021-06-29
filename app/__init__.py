@@ -2,7 +2,6 @@ from flask import Flask
 
 from app.extensions import login_manager, db
 from app.commands import create_tables
-import app.routes
 from app.models import User
 
 def create_app(config_file='config.py'):
@@ -13,6 +12,8 @@ def create_app(config_file='config.py'):
     db.init_app(application)
 
     login_manager.init_app(application)
+
+    from app import routes
     login_manager.login_view = 'routes.login'
 
     from app.models import User
@@ -20,8 +21,6 @@ def create_app(config_file='config.py'):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-
-    from app import routes
 
     application.cli.add_command(create_tables)
 
