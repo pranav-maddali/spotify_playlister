@@ -14,18 +14,18 @@ import os
 import json
 import requests
 
-main_blueprint = Blueprint('main', __name__)
+main_blueprint = Blueprint('main_blueprint', __name__)
 
-@main.route("/")
-@main.route("/home")
+@main_blueprint.route("/")
+@main_blueprint.route("/home")
 def home():
     return render_template('home.html')
 
-@main.route("/create", methods=['GET', 'POST'])
+@main_blueprint.route("/create", methods=['GET', 'POST'])
 def create():
     return render_template('create.html')
 
-@main.route("/about", methods=['GET', 'POST'])
+@main_blueprint.route("/about", methods=['GET', 'POST'])
 def about():
     info_text = """I used machine learning clustering to group together the most similar tracks in
     the top 50 charts of the US, UK and World on Spotify. In order to create these playlists, you will need
@@ -36,7 +36,7 @@ def about():
     elif request.method == 'GET':
         return render_template('create.html', info_text=info_text)
 
-@main.route("/playlists", methods=['GET', 'POST'])
+@main_blueprint.route("/playlists", methods=['GET', 'POST'])
 def playlists():
     global track_ids
     if request.method == 'GET':
@@ -50,7 +50,7 @@ def playlists():
         return render_template('playlists.html', form_data=form_data['minimum number of songs per playlist'], data=res.to_html(), num=clusters)
 
 
-@main.route("/login", methods=['GET', 'POST'])
+@main_blueprint.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
@@ -74,7 +74,7 @@ def login():
         login_user(curr_user, remember=remember_user)
         return redirect(url_for('home'))
 
-@main.route("/register", methods=['GET', 'POST'])
+@main_blueprint.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('register.html')
@@ -98,7 +98,7 @@ def register():
 
         return redirect(url_for('login'))
 
-@main.route("/logout")
+@main_blueprint.route("/logout")
 @login_required
 def logout():
     logout_user()
