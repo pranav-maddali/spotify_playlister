@@ -23,7 +23,7 @@ def create_app(config_file='config.py'):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-    application.register_blueprint(routes_blueprint)
+    application.register_blueprint(routes_bp)
 
     application.cli.add_command(create_tables)
 
