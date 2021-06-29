@@ -1,27 +1,28 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 
-from app.config import *
-
-application = Flask(__name__)
-
-application.config['SECRET_KEY'] = db_secret_key
-application.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///db.sqlite"
-
-db = SQLAlchemy(application)
-
-login_manager = LoginManager()
-login_manager.login_view = 'routes.login'
-login_manager.init_app(application)
-
+from app.extensions import login_manager, db
+from app.commands import create_tables
+import app.routes
 from app.models import User
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+def create_app(config_file='config.py'):
+    application = Flask(__name__)
 
-from app import routes
+    application.config.from_pyfile(config_file)
 
-if __name__ == "__main__":
-    application.run(debug=True)
+    db.init_app(application)
+
+    login_manager.init_app(application)
+    login_manager.login_view = 'routes.login'
+
+    from app.models import User
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+
+    from app import routes
+
+    application.cli.add_command(create_tables)
+
+    return application
