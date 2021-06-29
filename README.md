@@ -30,6 +30,12 @@ export FLASK_RUN=app
 export FLASK_DEBUG=1
 ```
 ```
+python3
+>>> from app import db, application
+>>> db.create_all(app=application)
+>>> quit()
+```
+```
 flask run
 ```
 The app should return a table displaying information about the tracks that were clustered.
