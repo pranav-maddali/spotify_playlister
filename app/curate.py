@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import json
 
+import config
+
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -9,11 +11,6 @@ from sklearn.preprocessing import StandardScaler
 import spotipy.util as util
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
-
-##################################################
-CLIENT_ID = "46caa64bfab44809a68d8f6fed02fdff"
-CLIENT_SECRET = "bd9b5b2a5246493b9695e2fb3cb81077"
-##################################################
 
 ############################################################################
 charts = {
@@ -34,7 +31,7 @@ def generateToken():
     global sp
 
     #allow us access to Spotify's records
-    token = SpotifyClientCredentials(client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+    token = SpotifyClientCredentials(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
     cache_token = token.get_access_token()
 
     sp = spotipy.Spotify(cache_token)

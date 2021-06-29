@@ -6,8 +6,9 @@ import pandas as pd
 
 from app.curate import *
 from app import application
-#from app.models import User
-#from . import db
+from app.models import User
+from app import db
+import config
 
 import sys
 import os
@@ -65,11 +66,11 @@ def login():
         curr_user = User.query.filter_by(email=email).first()
 
         #check if the email exists in the database and then if the password matches
-        if curr_user is None or not check_password_hash(user.password, pw):
+        if curr_user is None or not check_password_hash(curr_user.password, pw):
             flash("The username or password do not match. Please check your credentials and try again.")
             return redirect(url_for('login'))
 
-        login_user(user, remember=remember)
+        login_user(curr_user, remember=remember_user)
         return redirect(url_for('home'))
 
 @application.route("/register", methods=['GET', 'POST'])
@@ -91,8 +92,8 @@ def register():
 
         new_user = User(first_name=first_name, last_name=last_name, email=email, password=generate_password_hash(pw,method='sha256'))
 
-        #db.session.add(new_user)
-        #db.session.commit()
+        db.session.add(new_user)
+        db.session.commit()
 
         return redirect(url_for('login'))
 
