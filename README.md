@@ -5,6 +5,8 @@ A web app designed to cluster tracks from the top charts on Spotify using DBSCAN
 ## Tools Used:
 - Flask
 - Heroku
+- Postgres
+- SQLite (for offline)
 - Flask-SQLAlchemy
 ## Languages Used:
 - Python
@@ -14,28 +16,10 @@ A web app designed to cluster tracks from the top charts on Spotify using DBSCAN
 ### Currently in deployment stage with features such as:
 1. Saving created playlists to user
 2. Exporting playlists to user's spotify
-
+3. Extra login features with HTML updates
 coming soon.
 ***
 
-If you want to run locally (excluding the user login features):
-```
-git clone https://github.com/pranav-maddali/spotify_playlister
-```
-```
-pip install requirements.txt
-```
-```
-export FLASK_RUN=app
-export FLASK_DEBUG=1
-```
-```
-python3
->>> from app import db, application
->>> db.create_all(app=application)
->>> quit()
-```
-```
-flask run
-```
-The app should return a table displaying information about the tracks that were clustered.
+You can find the app at:
+https://spotify-web-playlister.herokuapp.com/
+
