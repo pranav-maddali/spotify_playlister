@@ -69,10 +69,10 @@ def login():
         #check if the email exists in the database and then if the password matches
         if curr_user is None or not check_password_hash(curr_user.password, pw):
             flash("The username or password do not match. Please check your credentials and try again.")
-            return redirect(url_for('login'))
+            return redirect(url_for('routes.login'))
 
         login_user(curr_user, remember=remember_user)
-        return redirect(url_for('home'))
+        return redirect(url_for('routes.home'))
 
 @routes_bp.route("/register", methods=['GET', 'POST'])
 def register():
@@ -89,17 +89,17 @@ def register():
         #check if the user already exists
         if user is not None:
             flash("This email already exists. Redirecting to login page.")
-            return redirect(url_for('login'))
+            return redirect(url_for('routes.login'))
 
         new_user = User(first_name=first_name, last_name=last_name, email=email, password=generate_password_hash(pw,method='sha256'))
 
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect(url_for('login'))
+        return redirect(url_for('routes.login'))
 
 @routes_bp.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('routes.login'))
