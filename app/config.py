@@ -1,7 +1,7 @@
 import os
 
-SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
-SECRET_KEY = os.environ.get('DATABASE_SECRET_KEY')
+SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 SPOTIFY_CREDS = {'client_id': os.environ.get('SPOTIFY_CLIENT_ID'), 'client_secret': os.environ.get('SPOTIFY_CLIENT_SECRET')}
