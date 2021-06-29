@@ -1,13 +1,12 @@
-from flask import Flask, flash, render_template, request, redirect, session, url_for
+from flask import Blueprint, Flask, flash, render_template, request, redirect, session, url_for
 from flask_login import login_required, current_user, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 
 from app.curate import *
-from app import application
 from app.models import User
-from app import db
+from app.extensions import db
 from app.config import *
 
 import sys
@@ -15,16 +14,18 @@ import os
 import json
 import requests
 
-@application.route("/")
-@application.route("/home")
+main = Blueprint('main', __name__)
+
+@main.route("/")
+@main.route("/home")
 def home():
     return render_template('home.html')
 
-@application.route("/create", methods=['GET', 'POST'])
+@main.route("/create", methods=['GET', 'POST'])
 def create():
     return render_template('create.html')
 
-@application.route("/about", methods=['GET', 'POST'])
+@main.route("/about", methods=['GET', 'POST'])
 def about():
     info_text = """I used machine learning clustering to group together the most similar tracks in
     the top 50 charts of the US, UK and World on Spotify. In order to create these playlists, you will need
@@ -35,7 +36,7 @@ def about():
     elif request.method == 'GET':
         return render_template('create.html', info_text=info_text)
 
-@application.route("/playlists", methods=['GET', 'POST'])
+@main.route("/playlists", methods=['GET', 'POST'])
 def playlists():
     global track_ids
     if request.method == 'GET':
@@ -49,7 +50,7 @@ def playlists():
         return render_template('playlists.html', form_data=form_data['minimum number of songs per playlist'], data=res.to_html(), num=clusters)
 
 
-@application.route("/login", methods=['GET', 'POST'])
+@main.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
@@ -73,7 +74,7 @@ def login():
         login_user(curr_user, remember=remember_user)
         return redirect(url_for('home'))
 
-@application.route("/register", methods=['GET', 'POST'])
+@main.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('register.html')
@@ -97,7 +98,7 @@ def register():
 
         return redirect(url_for('login'))
 
-@application.route("/logout")
+@main.route("/logout")
 @login_required
 def logout():
     logout_user()
