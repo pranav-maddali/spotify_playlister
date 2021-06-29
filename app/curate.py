@@ -12,33 +12,19 @@ import spotipy.util as util
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 
-############################################################################
-charts = {
-    "United States Top 50" : ("spotifycharts", "37i9dQZEVXbLRQDuF5jeBp"),
-    "United Kingdom Top 50" : ("spotifycharts", "37i9dQZEVXbLnolsZ8PSNw"),
-    "Global Top 50" : ("spotifycharts", "37i9dQZEVXbMDoHDwVN2tF"),
-    "United States Viral 50" : ("spotifycharts", "37i9dQZEVXbKuaTI1Z1Afx"),
-    "United Kingdom Viral 50" : ("spotifycharts", "37i9dQZEVXbL3DLHfQeDmV"),
-    "Global Viral 50" : ("spotifycharts", "37i9dQZEVXbLiRSasKsNU9")
-}
-track_features = ['artist', 'track', 'album', 'id', 'danceability',
-'energy', 'key', 'loudness', 'mode', 'speechiness', 'instrumentalness',
-'tempo', 'liveness', 'duration_ms']
-############################################################################
-
 def generateToken():
     #global var for the auth token
     global sp
 
     #allow us access to Spotify's records
-    token = SpotifyClientCredentials(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
+    token = SpotifyClientCredentials(client_id=SPOTIFY_CREDS['client_id'], client_secret=SPOTIFY_CREDS['client_secret'])
     cache_token = token.get_access_token()
 
     sp = spotipy.Spotify(cache_token)
 
 def playlist(username, id_):
     #create a dataframe to store all our tracks
-    df = pd.DataFrame(columns=track_features)
+    df = pd.DataFrame(columns=SPOTIFY_TRACK_FEATURES)
 
     #call the API to return a playlist (in our case, top 50 charts)
     playlist = sp.user_playlist_tracks(username, id_)
@@ -72,7 +58,7 @@ def playlist(username, id_):
     return df
 
 def playlists(playlist_dictionary):
-    output = pd.DataFrame(columns=track_features)
+    output = pd.DataFrame(columns=SPOTIFY_TRACK_FEATURES)
 
     for (k, v) in playlist_dictionary.items():
         df = playlist(v[0], v[1])
@@ -82,7 +68,7 @@ def playlists(playlist_dictionary):
     return output
 
 def clean():
-    all_tracks = playlists(charts)
+    all_tracks = playlists(SPOTIFY_CHARTS)
     all_tracks = all_tracks.drop_duplicates(subset='track', keep='first')
 
     top5_artists = all_tracks['artist'].value_counts()[:5]
