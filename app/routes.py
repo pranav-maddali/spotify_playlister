@@ -14,18 +14,18 @@ import os
 import json
 import requests
 
-routes_blueprint = Blueprint('routes', __name__)
+routes_bp = Blueprint('routes', __name__)
 
-@routes.route("/")
-@routes.route("/home")
+@routes_bp.route("/")
+@routes_bp.route("/home")
 def home():
     return render_template('home.html')
 
-@routes.route("/create", methods=['GET', 'POST'])
+@routes_bp.route("/create", methods=['GET', 'POST'])
 def create():
     return render_template('create.html')
 
-@routes.route("/about", methods=['GET', 'POST'])
+@routes_bp.route("/about", methods=['GET', 'POST'])
 def about():
     info_text = """I used machine learning clustering to group together the most similar tracks in
     the top 50 charts of the US, UK and World on Spotify. In order to create these playlists, you will need
@@ -36,7 +36,7 @@ def about():
     elif request.method == 'GET':
         return render_template('create.html', info_text=info_text)
 
-@routes.route("/playlists", methods=['GET', 'POST'])
+@routes_bp.route("/playlists", methods=['GET', 'POST'])
 def playlists():
     global track_ids
     if request.method == 'GET':
@@ -50,7 +50,7 @@ def playlists():
         return render_template('playlists.html', form_data=form_data['minimum number of songs per playlist'], data=res.to_html(), num=clusters)
 
 
-@routes.route("/login", methods=['GET', 'POST'])
+@routes_bp.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
@@ -74,7 +74,7 @@ def login():
         login_user(curr_user, remember=remember_user)
         return redirect(url_for('home'))
 
-@routes.route("/register", methods=['GET', 'POST'])
+@routes_bp.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('register.html')
@@ -98,7 +98,7 @@ def register():
 
         return redirect(url_for('login'))
 
-@routes.route("/logout")
+@routes_bp.route("/logout")
 @login_required
 def logout():
     logout_user()

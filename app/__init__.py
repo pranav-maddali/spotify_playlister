@@ -3,7 +3,7 @@ from flask import Flask
 from app.extensions import login_manager, db
 from app.commands import create_tables
 from app.models import User
-from app.routes import routes_blueprint
+from app.routes import routes_bp
 
 def create_app(config_file='config.py'):
     application = Flask(__name__)
