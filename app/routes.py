@@ -8,7 +8,7 @@ from app.curate import *
 from app import application
 from app.models import User
 from app import db
-import config
+from app.config import *
 
 import sys
 import os

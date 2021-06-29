@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import json
 
-import config
+from app.config import *
 
 from sklearn.cluster import KMeans, DBSCAN
 from sklearn.decomposition import PCA
