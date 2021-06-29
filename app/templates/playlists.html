@@ -7,7 +7,7 @@
 <body>
   <div class="home">
       <h2>Your playlists have been created!</h2>
-      <p>We discovered {{ num }} playlists.</p>
+      <p>We discovered {{ num }} playlists with at least {{ form_data }} songs per playlist unless duplicates were found.</p>
   </div>
   <div class="dataframe" style="overflow-x:auto;">
     <h2>{{ data | safe }}</h2>

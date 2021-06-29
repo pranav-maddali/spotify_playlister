@@ -20,9 +20,9 @@ charts = {
     "United States Top 50" : ("spotifycharts", "37i9dQZEVXbLRQDuF5jeBp"),
     "United Kingdom Top 50" : ("spotifycharts", "37i9dQZEVXbLnolsZ8PSNw"),
     "Global Top 50" : ("spotifycharts", "37i9dQZEVXbMDoHDwVN2tF"),
-    #"United States Viral 50" : ("spotifycharts", "37i9dQZEVXbKuaTI1Z1Afx"),
-    #"United Kingdom Viral 50" : ("spotifycharts", "37i9dQZEVXbL3DLHfQeDmV"),
-    #"Global Viral 50" : ("spotifycharts", "37i9dQZEVXbLiRSasKsNU9")
+    "United States Viral 50" : ("spotifycharts", "37i9dQZEVXbKuaTI1Z1Afx"),
+    "United Kingdom Viral 50" : ("spotifycharts", "37i9dQZEVXbL3DLHfQeDmV"),
+    "Global Viral 50" : ("spotifycharts", "37i9dQZEVXbLiRSasKsNU9")
 }
 track_features = ['artist', 'track', 'album', 'id', 'danceability',
 'energy', 'key', 'loudness', 'mode', 'speechiness', 'instrumentalness',
@@ -140,6 +140,7 @@ def create_playlists(tracks_per_cluster):
 
     out = output(clustered_DF, tracks)
     out.reset_index(drop=True, inplace=True)
+    out.index = np.arange(1, len(out)+1)
 
     return out, clusters
 

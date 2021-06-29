@@ -6,9 +6,19 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='auth.css') }}">
 </head>
 
-<div id="signin_form">
-    <h1 id="title">Sign In</h1>
-      <form method="POST" action="/login">
+<div id="signup_form">
+    <h1 id="title">Sign Up</h1>
+      <form method="POST" action="/register">
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" name="first_name" placeholder="First Name" autofocus="">
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" name="last_name" placeholder="Last Name" autofocus="">
+            </div>
+        </div>
         <div class="field">
             <div class="control">
                 <input class="input" type="email" name="email" placeholder="Email" autofocus="" required="required">
@@ -19,7 +29,7 @@
                 <input class="input" type="password" name="password" placeholder="Password" required="required">
             </div>
         </div>
-        <button id="btn">Sign In</button>
+        <button id="btn">Sign Up</button>
       </form>
 </div>
 {% endblock %}
