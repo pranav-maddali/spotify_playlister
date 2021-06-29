@@ -14,7 +14,7 @@ import os
 import json
 import requests
 
-main = Blueprint('main', __name__)
+main_blueprint = Blueprint('main', __name__)
 
 @main.route("/")
 @main.route("/home")
