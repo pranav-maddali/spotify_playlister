@@ -1,6 +1,6 @@
 # Spotify Playlister
 
-A web app designed to cluster tracks from the top charts on Spotify using DBSCAN and PCA. 
+A web app designed to cluster tracks from the top charts on Spotify using DBSCAN and PCA.
 ***
 ## Tools Used:
 - Flask
@@ -22,4 +22,3 @@ coming soon.
 
 You can find the app at:
 https://spotify-web-playlister.herokuapp.com/
-
