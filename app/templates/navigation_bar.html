@@ -2,7 +2,12 @@
   <ul>
     <li><a href="{{ url_for('routes.home') }}" title="Home Page">Home</a></li>
     <li><a href="{{ url_for('routes.create') }}" title="Create Playlists">Create</a></li>
+    {% if not current_user.is_authenticated %}
     <li style="float:right"><a href="{{ url_for('routes.login') }}" title="Account Login">Login</a></li>
     <li style="float:right"><a href="{{ url_for('routes.register') }}" title="Account Signup">Signup</a></li>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+    <li style="float:right"><a href="{{ url_for('routes.logout') }}" title="Account Logout">Logout</a></li>
+    {% endif %}
   </ul>
 </body>
