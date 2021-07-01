@@ -22,3 +22,5 @@ coming soon.
 
 You can find the app at:
 https://spotify-web-playlister.herokuapp.com/
+
+![demo](https://github.com/pranav-maddali/spotify_playlister/blob/main/demo.gif)
